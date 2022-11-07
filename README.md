@@ -1,4 +1,4 @@
-# LTO Documentation
+# LTO Documentation - Command Line
 
 ## Terms and Definitions
 ### Device Numbering
@@ -21,7 +21,7 @@ Depending on your specific needs, you will need to install some or all of the fo
 - `ltfs` - Install the reference implementation from [here](https://github.com/LinearTapeFileSystem/ltfs "ltfs reference implementation")
 - `bru` - Download and install Argest BRU Core from the [BRU website](https://www.tolisgroup.com/index.html "BRU website")
 
-## Verifying Functionality
+## Connecting Everything
 - Connect and turn on your LTO drive
 - To check that the drive is correctly recognized, run the command:
 ``` cat /proc/scsi/scsi ```
@@ -29,20 +29,37 @@ Depending on your specific needs, you will need to install some or all of the fo
 
 ## Loading Tapes From a Tape Library Using the Command Line
 - Start by checking
-```sudo mtx -f /dev/sg# status```
+  ```sudo mtx -f /dev/sg# status```
 - Next, load the tape from the desired slot into the desired drive.
 - MTX load commands use the following structure:
-```sudo mtx -f /dev/sg# load slot# device#```
+  ```sudo mtx -f /dev/sg# load slot# device#```
 - If loading a tape into device 0 (the first device recognized), `device#` can be either `0` or ommitted from the command.
 - In this example command, we are loading a tape from slot 6 into device 0
-```sudo mtx -f /dev/sg5 load 6```
+  ```sudo mtx -f /dev/sg5 load 6```
 - Once the tape loads, you can verify that the tape has loaded correctly using the following command:
-```sudo mt -f /dev/nst0 status```
+  ```sudo mt -f /dev/nst0 status```
 - If everything worked, you should see `BOT ONLINE` at the bottom of the returned text.
 
 ## Unloading Tapes
+- Before unloading, you should unmount any mounted ltfs file systems
+- Run the following command:
+  ```sudo umount /mnt/ltfs```
+- Now the file system is unmounted, you can rewind and unload the tape
+  ```sudo mt -f /dev/nst0 rewoffl```
+- Once the tape finishes unloading, you can use mtx to return it to its original location:
+  ```sudo mtx -f /dev/sg# unload```
 
 ## Mounting the LTFS File System
+- Create a mount point using the command:
+  ```sudo mkdir /mnt/ltfs```
+- If you have not already loaded an LTO tape into your drive, make sure to do so before proceding.
+- You can get the `sg#` of the tape drive from the ltfs command if you do not already have it from running the `cat` command:
+  ```sudo ltfs -o device_list```
+- You should now be able to mount the ltfs file system using the following command (replace /dev/sg# with the corresponding location returned by the previous command):
+  ```ltfs -o devname=/dev/sg# /mnt/ltfs```
+- You can check that the tape sucessfully mounted by running:
+  ```mount``
+- You should see `/dev/sg# on /mnt/ltfs` when running the above command now
 
 ## Using BRU
 
