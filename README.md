@@ -29,23 +29,23 @@ Depending on your specific needs, you will need to install some or all of the fo
 
 ## Loading Tapes From a Tape Library Using the Command Line
 - Start by checking
-
-  ```sudo mtx -f /dev/sg# status```
-
+  ```
+  sudo mtx -f /dev/sg# status
+  ```
 - Next, load the tape from the desired slot into the desired drive.
 - MTX load commands use the following structure:
-
-  ```sudo mtx -f /dev/sg# load slot# device#```
-
+  ```
+  sudo mtx -f /dev/sg# load slot# device#
+  ```
 - If loading a tape into device 0 (the first device recognized), `device#` can be either `0` or ommitted from the command.
 - In this example command, we are loading a tape from slot 6 into device 0
-
-```sudo mtx -f /dev/sg5 load 6```
-
+  ```
+  sudo mtx -f /dev/sg5 load 6
+  ```
 - Once the tape loads, you can verify that the tape has loaded correctly using the following command:
-
-```sudo mt -f /dev/nst0 status```
-
+  ```
+  sudo mt -f /dev/nst0 status
+  ```
 - If everything worked, you should see `BOT ONLINE` at the bottom of the returned text.
 
 ## Unloading Tapes
