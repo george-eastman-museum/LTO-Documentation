@@ -2,6 +2,9 @@
 
 ## Terms and Definitions
 ### Device Numbering
+- Connected devices such as LTO drives, CD drives, etc. are loaded via the Linux "SCSI generic" (sg) driver.
+- Tape drives specifically will be loaded using the "SCSI tape" (st) driver as well.
+- Connected devices of each type will receive a corresponding number (i.e. sg3, st0) starting at 0 and are accessible in the directory `/dev`.
 - To keep this documentation generic the '#' sign is used in place of numbers in most places.
 - For example, `/dev/sg5` or `/dev/st0` will instead be referred to as `/dev/sg#` and `/dev/st#` as the number may vary depending on your configuration.
 ### **/dev/st0** vs **/dev/nst0**
@@ -85,6 +88,13 @@ Depending on your specific needs, you will must first install some or all of the
 ### Multi-Volume Tapes
 - When BRU reaches the end of a volume it will prompt the user with the message `load volume # - press ENTER to continue on device 'dev/nst#'`
 - You will then have the option to tell BRU how to proceed (`C`ontinue, `N`ew device, `Q`uit)
+- If you have multiple drives connected, you can load the next volume into that drive and enter `N` to specify that BRU should now read from that device instead.
+- If you only have a signle drive
+  - open a new terminal tab or window.
+  - Use mt and mtx to rewind and unload the tape.
+  - Load the next volume into the drive.
+  - Return to the original BRU prompt and press enter or type "c" and press enter.
+  - BRU should continue processing on the new volume.
 
 ## Troubleshooting
 ### DR_OPEN IM_REP_EN
