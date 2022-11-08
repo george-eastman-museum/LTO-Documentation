@@ -15,7 +15,7 @@
 
 ## Installation - Prerequisites
 ### Linux
-Depending on your specific needs, you will need to install some or all of the following:
+Depending on your specific needs, you will must first install some or all of the following:
 - `mt-st` - for tape control
 - `mtx` - for auto-loaders and tape libraries
 - `ltfs` - Install the reference implementation from [here](https://github.com/LinearTapeFileSystem/ltfs "ltfs reference implementation")
@@ -29,7 +29,7 @@ Depending on your specific needs, you will need to install some or all of the fo
   ```
 - If you are using an auto-loader, you should see two tape-related devices (in this case associated with scsi6, but with different Lun numbers)
 
-## Loading Tapes From a Tape Library Using the Command Line
+## Loading Tapes From a Tape Library
 - Start by checking the status of the tape library. This will let you know which tapes are loaded into which slots.
   ```
   sudo mtx -f /dev/sg# status
@@ -82,6 +82,9 @@ Depending on your specific needs, you will need to install some or all of the fo
 - To check that the tape was successfully mounted, run the `mount` command and you should see `/dev/sg# on /mnt/ltfs` near the bottom of the output.
 
 ## Using BRU
+### Multi-Volume Tapes
+- When BRU reaches the end of a volume it will prompt the user with the message `load volume # - press ENTER to continue on device 'dev/nst#'`
+- You will then have the option to tell BRU how to proceed (`C`ontinue, `N`ew device, `Q`uit)
 
 ## Troubleshooting
 ### DR_OPEN IM_REP_EN
