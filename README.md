@@ -4,8 +4,8 @@
 ### Device Numbering
 - Connected devices such as LTO drives, CD drives, etc. are loaded via the Linux "SCSI generic" (sg) driver.
 - Tape drives specifically will be loaded using the "SCSI tape" (st) driver as well.
-- Connected devices of each type will receive a corresponding number (i.e. sg3, st0) starting at 0 and are accessible in the directory `/dev`.
-- To keep this documentation generic the '#' sign is used in place of numbers in most places.
+- Connected devices of each type will receive a corresponding number (i.e. sg3, st0) starting at 0 and are accessible in the directory **/dev**.
+- To keep this documentation generic the **#** sign is used in place of numbers in most places.
 - For example, `/dev/sg5` or `/dev/st0` will instead be referred to as `/dev/sg#` and `/dev/st#` as the number may vary depending on your configuration.
 ### **/dev/st0** vs **/dev/nst0**
 - Both of these can be used to refer to the first tape device connected to your computer.
@@ -18,10 +18,10 @@
 
 ## Installation - Prerequisites
 ### Linux
-Depending on your specific needs, you will must first install some or all of the following:
+Depending on your specific needs, you must first install some or all of the following:
 - `mt-st` - for tape control
 - `mtx` - for auto-loaders and tape libraries
-- `ltfs` - Install the reference implementation from [here](https://github.com/LinearTapeFileSystem/ltfs "ltfs reference implementation")
+- `ltfs` - Linear Tape File System. Install the reference implementation from [here](https://github.com/LinearTapeFileSystem/ltfs "ltfs reference implementation")
 - `bru` - Download and install Argest BRU Core from the [BRU website](https://www.tolisgroup.com/index.html "BRU website")
 
 ## Connecting Everything
@@ -51,7 +51,9 @@ Depending on your specific needs, you will must first install some or all of the
   ```
   sudo mt -f /dev/nst0 status
   ```
-- If everything worked, you should see `BOT ONLINE` at the bottom of the returned text.
+- Near the top of the returned text you should see information about where in the tape you currently are.
+- `File number=0, block number=0, partition=0` means that you are at the beginning of the tape.
+- If everything worked you should also see `BOT ONLINE` at the bottom of the returned text.
 
 ## Unloading Tapes
 - Before unloading, you should unmount any mounted ltfs file systems
@@ -68,13 +70,14 @@ Depending on your specific needs, you will must first install some or all of the
   sudo mtx -f /dev/sg# unload
   ```
 
-## Mounting the LTFS File System
+## LTFS
+### Reading Tapes
 - Create a mount point using the command:
   ```
   sudo mkdir /mnt/ltfs
   ```
 - If you have not already loaded an LTO tape into your drive, make sure to do so before proceding.
-- You can get the `sg#` of the tape drive from the ltfs command if you do not already have it from running the `cat` command:
+- You can get the **sg#** of the tape drive from the ltfs command if you do not already have it from running the `cat` command:
   ```
   sudo ltfs -o device_list
   ```
@@ -84,10 +87,23 @@ Depending on your specific needs, you will must first install some or all of the
   ```
 - To check that the tape was successfully mounted, run the `mount` command and you should see `/dev/sg# on /mnt/ltfs` near the bottom of the output.
 
-## Using BRU
+## BRU
+### Reading Tapes
+- Check the status of your loaded tape using the MT command to make sure that you are at the beginning.
+- Inspect the first block of the tape and get general info about it.
+  ```
+  sudo bru -g -b 2048k -f /dev/st# -v
+  ```
+  - **you may need to experiment with different values for `-b`. 2048k and 128k are common values for our tapes**
+  - **use /dev/st# instead of /dev/nst# here so that you don't need to rewind if the value of `-b` was incorrect**
+- Check the table of contents to get a list of all of the files on the tape.
+  ```
+  bru -t -b 2048k -f /dev/nst# -v
+  ```
+  - **This command will take a long time to run**
 ### Multi-Volume Tapes
 - When BRU reaches the end of a volume it will prompt the user with the message `load volume # - press ENTER to continue on device 'dev/nst#'`
-- You will then have the option to tell BRU how to proceed (`C`ontinue, `N`ew device, `Q`uit)
+- You will then have the option to tell BRU how to proceed (**C**ontinue, **N**ew device, **Q**uit)
 - If you have multiple drives connected, you can load the next volume into that drive and enter `N` to specify that BRU should now read from that device instead.
 - If you only have a signle drive
   - open a new terminal tab or window.
@@ -97,5 +113,4 @@ Depending on your specific needs, you will must first install some or all of the
   - BRU should continue processing on the new volume.
 
 ## Troubleshooting
-### DR_OPEN IM_REP_EN
-- This message most likely means that you forgot to load the tape using the mtx command
+- **MT Status `DR_OPEN IM_REP_EN`** - This message most likely means that you forgot to load the tape using the mtx command
