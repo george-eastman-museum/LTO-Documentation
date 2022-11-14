@@ -53,7 +53,7 @@ Depending on your specific needs, you must first install some or all of the foll
   ```
 - Near the top of the returned text you should see information about where in the tape you currently are.
 - `File number=0, block number=0, partition=0` means that you are at the beginning of the tape.
-- If everything worked you should also see `BOT ONLINE` at the bottom of the returned text.
+- If everything worked you should also see `ONLINE` in the bottom of the returned text.
 
 ## Unloading Tapes
 - Before unloading, you should unmount any mounted ltfs file systems
@@ -111,6 +111,27 @@ Depending on your specific needs, you must first install some or all of the foll
   - Load the next volume into the drive.
   - Return to the original BRU prompt and press enter or type "c" and press enter.
   - BRU should continue processing on the new volume.
+### Restoring Files From Tape to a Different Directory
+- The `-x` command is used to extract/restore files from a BRU LTO tape.
+- Start by checking what the path information on the LTO tape looks like using the `-t` command.
+- In order to change the path when restoring the files you will need to create a translation file.
+- A translation file is just a simple text file listing the original path information and the new path information that you want to replace that with, separated by a space.
+- Example1: /Volumes/Original_Folder /mnt/New_Network_Share/LTO_Output
+- Example2: /Volumes/Original_Folder '/mnt/New Network Share with Spaces/LTO Output'
+- Save your translation file somewhere that will be easy to reference later on.
+- If you are on Linux and writing to an SMB share, you may want to manually mount the share to a specific location, such as in **/mnt** to avoid issues with reading the output path correctly.
+- If you have not already created an output folder that you want to write your files to, do so now and `cd` to that directory.
+  ```
+  mkdir /mnt/New_Network_Share/LTO_Output
+  cd /mnt/New_Network_Share/LTO_Output
+  ```
+- Run the following command to combine outputting to a relative directory with substituting paths using your translation file.
+  ```
+  sudo bru -xvvv -b 128k -PA -T/translation_file_path/translation_file -f /dev/nst#
+  ```
+- Including `-T/translation_file_path/tranlation_file` will substitute any specified paths from the LTO tape with the paths you provided in your translation file. 
+- If there are any paths on the LTO tape that you did not include in your translation file, running the command from the desired output folder with the `-PA` command ensures that they will still be written to that folder with their full original paths appended to the end of the current folder.
+- TODO - address writing /Volume in a better way (translation file should probably be able to cover this)
 
 ## Troubleshooting
 - **MT Status `DR_OPEN IM_REP_EN`** - This message most likely means that you forgot to load the tape using the mtx command
