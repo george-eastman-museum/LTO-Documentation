@@ -83,7 +83,7 @@ Depending on your specific needs, you must first install some or all of the foll
   ```
 - You should now be able to mount the ltfs file system using the following command (replace /dev/sg# with the corresponding location returned by the previous command):
   ```
-  ltfs -o devname=/dev/sg# /mnt/ltfs
+  sudo ltfs -o devname=/dev/sg# /mnt/ltfs
   ```
 - To check that the tape was successfully mounted, run the `mount` command and you should see `/dev/sg# on /mnt/ltfs` near the bottom of the output.
 
