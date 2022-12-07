@@ -95,7 +95,7 @@ Depending on your specific needs, you must first install some or all of the foll
 - Once this is complete, you should now be able to mount the LTFS tape using the commands from the above **Reading Tapes** section.
 - The LTFS reference implementation page recommends using a utility that optimizes writes for tape when copying files.
 - The `ltfs_ordered_copy` utility should be included with the LTFS reference implementation and can be used for this purpose.
-- The following command should perform a simple recursive copy the preserves as many file attributes (creation date, etc.) as possible:
+- The following command should perform a simple recursive copy that preserves as many file attributes (creation date, etc.) as possible:
   ```
   ltfs_ordered_copy -a -v input output
   ```
