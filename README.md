@@ -9,7 +9,7 @@
 - For example, `/dev/sg5` or `/dev/st0` will instead be referred to as `/dev/sg#` and `/dev/st#` as the number may vary depending on your configuration.
 ### **/dev/st0** vs **/dev/nst0**
 - Both of these can be used to refer to the first tape device connected to your computer.
-- However, there is a difference in the tape device functionality that denoted by each.
+- However, there is a difference in the tape device functionality denoted by each.
 - `/dev/st#` is a rewinding device.
 - `/dev/nst#` is a non-rewinding device.
 - If you want the tape to rewind after an action is performed, it should be referenced as `/dev/st#`
