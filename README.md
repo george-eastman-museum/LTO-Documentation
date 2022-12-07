@@ -125,7 +125,7 @@ Depending on your specific needs, you must first install some or all of the foll
 - When BRU reaches the end of a volume it will prompt the user with the message `load volume # - press ENTER to continue on device 'dev/nst#'`
 - You will then have the option to tell BRU how to proceed (**C**ontinue, **N**ew device, **Q**uit)
 - If you have multiple drives connected, you can load the next volume into that drive and enter `N` to specify that BRU should now read from that device instead.
-- If you only have a signle drive
+- If you only have a single drive
   - open a new terminal tab or window.
   - Use mt and mtx to rewind and unload the tape.
   - Load the next volume into the drive.
