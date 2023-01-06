@@ -103,7 +103,7 @@ Depending on your specific needs, you must first install some or all of the foll
   ```
   ltfs_ordered_copy -a -v input output
   ```
-- (TODO: look into the mkltfs --rules command, which sets rules for choosing files to write to the index partition, and how the index partition is used by other LTFS software we use)
+- (**TODO**: look into the mkltfs --rules command, which sets rules for choosing files to write to the index partition, and how the index partition is used by other LTFS software we use)
 - If you are unsure whether an `ltfs_ordered_copy` command will function the way you expect, you can always test the command out writing to hard drive first (the command will warn you that the destination is not an LTFS file system, but should still copy the files).
 ### Reformatting/Wiping Tapes
 - If you need to erase the LTFS formatting on a tape, you can run the following command (THIS WILL DELETE ALL THE FILES):
@@ -155,11 +155,11 @@ Depending on your specific needs, you must first install some or all of the foll
   ```
   - Including `-T/translation_file_path/tranlation_file` will substitute any specified paths from the LTO tape with the paths you provided in your translation file. 
   - If there are any paths on the LTO tape that you did not include in your translation file, running the command from the desired output folder with the `-PA` command   ensures that they will still be written to that folder with their full original paths appended to the end of the current folder.
-  - TODO - address writing /Volume in a better way (translation file should probably be able to cover this)
+  - **TODO** - address writing /Volume in a better way (translation file should probably be able to cover this)
 ### Restoring A Specific File or Directory
 - You can modify the restore command to only restore a specific folder using the `-E` command.
 - Start by getting the path to the file you want to restore from the bru server catalog.
-- ** Note that paths with spaces need to be enclosed in quotes for the command to work **
+- **Note that paths with spaces need to be enclosed in quotes for the command to work**
 - `cd` to the folder that you want to output to.
 - Run the following extract command:
   ```
@@ -169,7 +169,7 @@ Depending on your specific needs, you must first install some or all of the foll
   ```
   sudo bru -xvvv -b 128k -PA -E "/path/to/folder/*" -f /dev/nst0
   ```
-- TODO - more work to figure out translation files and seeking.
+- **TODO** - more work to figure out translation files and seeking.
 
 ## Troubleshooting
 - **MT Status `DR_OPEN IM_REP_EN`** - This message most likely means that you forgot to load the tape using the mtx command
