@@ -40,7 +40,7 @@ Depending on your specific needs, you must first install some or all of the foll
 - Next, load the tape from the desired slot into the desired drive.
 - MTX load commands use the following structure:
   ```
-  sudo mtx -f /dev/sg# load slot# device#
+  sudo mtx -f /dev/sg# load slot# drive#
   ```
 - If loading a tape into device 0 (the first device recognized), `device#` can be either `0` or ommitted from the command.
 - In this example command, we are loading a tape from slot 6 into device 0
@@ -68,6 +68,10 @@ Depending on your specific needs, you must first install some or all of the foll
 - Once the tape finishes unloading, you can use mtx to return it to its original location:
   ```
   sudo mtx -f /dev/sg# unload
+  ```
+- If unloading a tape from a drive other than drive 0, you can specify stlot# and drive# similar to the `load` command:
+  ```
+  sudo mtx -f /dev/sg# unload 9 1
   ```
 
 ## LTFS
@@ -152,6 +156,20 @@ Depending on your specific needs, you must first install some or all of the foll
   - Including `-T/translation_file_path/tranlation_file` will substitute any specified paths from the LTO tape with the paths you provided in your translation file. 
   - If there are any paths on the LTO tape that you did not include in your translation file, running the command from the desired output folder with the `-PA` command   ensures that they will still be written to that folder with their full original paths appended to the end of the current folder.
   - TODO - address writing /Volume in a better way (translation file should probably be able to cover this)
+### Restoring A Specific File or Directory
+- You can modify the restore command to only restore a specific folder using the `-E` command.
+- Start by getting the path to the file you want to restore from the bru server catalog.
+- ** Note that paths with spaces need to be enclosed in quotes for the command to work **
+- `cd` to the folder that you want to output to.
+- Run the following extract command:
+  ```
+  sudo bru -xvvv -b 128k -PA -E "/path/to/file" -f /dev/nst0
+  ```
+- The restore command also works with wildcards if you want to restore the contents of an entire directory:
+  ```
+  sudo bru -xvvv -b 128k -PA -E "/path/to/folder/*" -f /dev/nst0
+  ```
+- TODO - more work to figure out translation files and seeking.
 
 ## Troubleshooting
 - **MT Status `DR_OPEN IM_REP_EN`** - This message most likely means that you forgot to load the tape using the mtx command
