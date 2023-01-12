@@ -75,7 +75,7 @@ Depending on your specific needs, you must first install some or all of the foll
   ```
 
 ## LTFS
-### Reading Tapes
+### Getting Started
 - Create a mount point using the command:
   ```
   sudo mkdir /mnt/ltfs
@@ -85,23 +85,31 @@ Depending on your specific needs, you must first install some or all of the foll
   ```
   sudo ltfs -o device_list
   ```
-- You should now be able to mount the ltfs file system using the following command (replace /dev/sg# with the corresponding location returned by the previous command):
+- If your tape is not yet formatted with LTFS, proceed to the Formatting Tapes section.
+- If your tape is already formatted with LTFS, proceed to the Reading/Mounting Tapes section.
+### Formatting Tapes
+- Before you can mount a new tape, you must first format it as an LTFS tape.
+- Enter the following `mkltfs` command to format a new tape that has been loaded into your drive:
+  ```
+  sudo mkltfs --device=/dev/sg# --tape-serial=<enter the 6 alphanumeric values from the label>
+  ```
+- Once this is complete, you should now be able to mount the LTFS tape using the command from the below **Reading/Mounting Tapes** section.
+### Reading/Mounting Tapes
+- Use the following command to mount an LTFS formatted tape (replace `/dev/sg#` with the corresponding location returned by the `-o device_list` command. If using a different mount point, `/mnt/ltfs` should also be replaced with the correct path):
   ```
   sudo ltfs -o devname=/dev/sg# /mnt/ltfs
   ```
 - To check that the tape was successfully mounted, run the `mount` command and you should see `/dev/sg# on /mnt/ltfs` near the bottom of the output.
 ### Writing Tapes
-- Before you can mount or write to a new tape, you must first format it as an LTFS tape.
-- Enter the following `mkltfs` command to format a new tape that has been loaded into your drive:
-  ```
-  sudo mkltfs --device=/dev/sg# --tape-serial=<enter the 6 alphanumeric values from the label>
-  ```
-- Once this is complete, you should now be able to mount the LTFS tape using the commands from the above **Reading Tapes** section.
 - The LTFS reference implementation page recommends using a utility that optimizes writes for tape when copying files.
 - The `ltfs_ordered_copy` utility should be included with the LTFS reference implementation and can be used for this purpose.
 - The following command should perform a simple recursive copy that preserves as many file attributes (creation date, etc.) as possible:
   ```
   ltfs_ordered_copy -a -v input output
+  ```
+- To simplify the copy process, it may be helpful to prepare all files ahead of time and place them all in a single folder corresponding to your LTO tape. You can then follow your `input` path with a `/` to copy everything inside of the input folder without copying the input folder itself:
+  ```
+  ltfs_ordered_copy -a -v '/path/to/source/folder/tape_id/' '/mnt/ltfs'
   ```
 - (**TODO**: look into the mkltfs --rules command, which sets rules for choosing files to write to the index partition, and how the index partition is used by other LTFS software we use)
 - If you are unsure whether an `ltfs_ordered_copy` command will function the way you expect, you can always test the command out writing to hard drive first (the command will warn you that the destination is not an LTFS file system, but should still copy the files).
