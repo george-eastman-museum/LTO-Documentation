@@ -145,6 +145,12 @@ Depending on your specific needs, you must first install some or all of the foll
   - Load the next volume into the drive.
   - Return to the original BRU prompt and press enter or type "c" and press enter.
   - BRU should continue processing on the new volume.
+### Verify Tape (without restoring)
+- (have not tested yet)
+- The following command will calculate the checksum of each block and compare it against the checksum written in the header. Bru may still be able to fix some errors when restoring the tape.
+```
+  bru -ivf /dev/st0
+```
 ### Restoring Files From Tape to a Different Directory
 - The `-x` command is used to extract/restore files from a BRU LTO tape.
 - Start by checking what the path information on the LTO tape looks like using the `-t` command.
