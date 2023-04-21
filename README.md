@@ -24,6 +24,14 @@ Depending on your specific needs, you must first install some or all of the foll
 - `ltfs` - Linear Tape File System. Install the reference implementation from [here](https://github.com/LinearTapeFileSystem/ltfs "ltfs reference implementation")
 - `bru` - Download and install Argest BRU Core from the [BRU website](https://www.tolisgroup.com/index.html "BRU website")
 
+### Permissions
+- By default, only the Super User will have permission to use tape devices and tape-related commands
+- To give a standard user access to tape devices:
+  - Run `sudo usermod -a -G tape username` where `username` is the name of the user that you want to grant access to tape devices
+  - Restart your computer
+  - If the command was successful, you should now see `tape` listed as one of the groups when running the `groups` command as that user
+  - You can also check the `/etc/group` file and make sure that that user is listed next to the `tape` group
+
 ## Connecting Everything
 - Connect and turn on your LTO drive
 - **TODO - ADD IMAGE + NOTES ABOUT CONNECTORS**
