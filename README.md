@@ -15,12 +15,16 @@
 - If you want the tape to rewind after an action is performed, it should be referenced as `/dev/st#`
 - If you want to leave off at the end of your last action on the tape (for example when writing files to prevent overwriting data), you would use `/dev/nst#`
 - As long as you remember to manually rewind or seek to the correct location when necessary, `/dev/nst#` should always work.
+### **/dev/sg#** vs **/dev/sch#**
+- The tape library commands using `mtx` can use either the SGSI generic number (/dev/sg#) or the SCSI Changer number (/dev/sch#).
+- `/dev/sch#` will generally be easier to identify since there is likely to only be one changer connected to the computer at a time.
 
 ## Installation - Prerequisites
 ### Linux
 Depending on your specific needs, you must first install some or all of the following:
 - `mt-st` - for tape control
 - `mtx` - for auto-loaders and tape libraries
+- `lsscsi` - for getting info about SCSI devices
 - `ltfs` - Linear Tape File System. Install the reference implementation from [here](https://github.com/LinearTapeFileSystem/ltfs "ltfs reference implementation")
 - `bru` - Download and install Argest BRU Core from the [BRU website](https://www.tolisgroup.com/index.html "BRU website")
 
@@ -42,20 +46,32 @@ Depending on your specific needs, you must first install some or all of the foll
 - If you are using an auto-loader, you should see two tape-related devices (in this case associated with scsi6, but with different Lun numbers)
 - **TODO - ADD IMAGE**
 
+### Checking SCSI Devices Using lsscsi
+- The `lsscsi` command can also be used to get information about connected SCSI devices, including the sg/sch/st numbers needed to reference each.
+- To check all SCSI devices, use the `lsscsi -l` command.
+- To check for tape devices, run the command:
+  ```
+  lsscsi -l | grep tape
+  ```
+- To check for tape libraries, run the command:
+  ```
+  lsscsi -l | grep medium
+  ```
+
 ## Loading Tapes From a Tape Library
 - Start by checking the status of the tape library. This will let you know which tapes are loaded into which slots.
   ```
-  sudo mtx -f /dev/sg# status
+  sudo mtx -f /dev/sch# status
   ```
 - Next, load the tape from the desired slot into the desired drive.
 - MTX load commands use the following structure:
   ```
-  sudo mtx -f /dev/sg# load slot# drive#
+  sudo mtx -f /dev/sch# load slot# drive#
   ```
 - If loading a tape into device 0 (the first device recognized), `device#` can be either `0` or ommitted from the command.
 - In this example command, we are loading a tape from slot 6 into device 0
   ```
-  sudo mtx -f /dev/sg5 load 6
+  sudo mtx -f /dev/sch5 load 6
   ```
 - Once the tape loads, you can verify that the tape has loaded correctly using the following command:
   ```
@@ -77,11 +93,11 @@ Depending on your specific needs, you must first install some or all of the foll
   ```
 - Once the tape finishes unloading, you can use mtx to return it to its original location:
   ```
-  sudo mtx -f /dev/sg# unload
+  sudo mtx -f /dev/sch# unload
   ```
 - If unloading a tape from a drive other than drive 0, you can specify stlot# and drive# similar to the `load` command:
   ```
-  sudo mtx -f /dev/sg# unload 9 1
+  sudo mtx -f /dev/sch# unload 9 1
   ```
 
 ## LTFS
