@@ -53,13 +53,24 @@ Depending on your specific needs, you must first install some or all of the foll
 ## Connecting Everything
 
 - Connect and turn on your LTO drive
-- **TODO - ADD IMAGE + NOTES ABOUT CONNECTORS**
+
+  ![LTO drives](images/drive_closeup.jpg)
+  *LTO drives*
+
+  ![SAS cable](images/SAS_front.jpg)
+  *SAS cable*
+
+  ![SAS cables connected to LTO drives](images/drive_with_cables.jpg)
+  *SAS cables connected to LTO drives*
+
 - To check that the drive is correctly recognized, run the command:
   ```
   cat /proc/scsi/scsi
   ```
 - If you are using an auto-loader, you should see two tape-related devices (in this case associated with scsi6, but with different Lun numbers)
-- **TODO - ADD IMAGE**
+
+  ![tape library](images/tape_library_workstation.jpg)
+  *Auto-loader tape library*
 
 ### Checking SCSI Devices Using lsscsi
 
@@ -97,7 +108,16 @@ Depending on your specific needs, you must first install some or all of the foll
 - Near the top of the returned text you should see information about where in the tape you currently are.
 - `File number=0, block number=0, partition=0` means that you are at the beginning of the tape. You will also get a `BOT` (Beginning Of Tape) message in the bottom of the returned text.
 - If you have turned write protection on in your tape, you will also see `WR_PROT` near `BOT`.
+
+  ![Write protection off](images/write_protect_off.jpg)
+  *Write protection off*
+
+  ![write protection on](images/write_protect_on.jpg)
+  *Write protection on*
+
 - If everything worked you should also see `ONLINE` in the bottom of the returned text.
+
+  ![BOT message](images/BOT_write_protect.png)
 
 ## Unloading Tapes
 
@@ -165,9 +185,9 @@ Depending on your specific needs, you must first install some or all of the foll
 - (**TODO**: look into the mkltfs --rules command, which sets rules for choosing files to write to the index partition, and how the index partition is used by other LTFS software we use)
 - If you are unsure whether an `ltfs_ordered_copy` command will function the way you expect, you can always test the command out writing to hard drive first (the command will warn you that the destination is not an LTFS file system, but should still copy the files).
 - `ltfs_ordered_copy` command can also be used to copy data from tape to another location, like a local hard drive. As mentioned above, the command will warn you that the destination is not an LTFS file system, but will still copy the files:
-```
-ltfs_ordered_copy -a '/mnt/ltfs' 'ouput_path'
-```
+  ```
+  ltfs_ordered_copy -a '/mnt/ltfs' 'ouput_path'
+  ```
 
 ### Reformatting/Wiping Tapes
 
@@ -223,9 +243,9 @@ ltfs_ordered_copy -a '/mnt/ltfs' 'ouput_path'
 - The `-x` command is used to extract/restore files from a BRU LTO tape.
 - Start by checking what the path information on the LTO tape looks like using the `-t` command.
 - To restore the files with their original paths preserved, run the following command:
-```
-sudo bru -xvvv -b 128k -PA -f /dev/nst#
-```
+  ```
+  sudo bru -xvvv -b 128k -PA -f /dev/nst#
+  ```
 - In order to change the path when restoring the files you will need to create a translation file.
 - A translation file is just a simple text file listing the original path information and the new path information that you want to replace that with, separated by a space.
   - Example1: /Volumes/Original_Folder /mnt/New_Network_Share/LTO_Output
@@ -265,6 +285,9 @@ sudo bru -xvvv -b 128k -PA -f /dev/nst#
 ## Troubleshooting
 
 - **MT Status `DR_OPEN IM_REP_EN`** - This message most likely means that you forgot to load the tape using the mtx command
+- Make sure the SAS 1 cable is connected to the top deck of the tape library
+
+  ![SAS cable numbers](images/SAS_numbered.jpg)
 
 ## Additional Resources
 
