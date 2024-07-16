@@ -213,23 +213,6 @@ Depending on your specific needs, you must first install some or all of the foll
   ```
   - **This command will take a long time to run**
 
-### Multi-Volume Tapes
-
-- When BRU reaches the end of a volume it will prompt the user with the message `load volume # - press ENTER to continue on device 'dev/nst#'`
-- You will then have the option to tell BRU how to proceed (**C**ontinue, **N**ew device, **Q**uit)
-- If you have multiple drives connected, you can load the next volume into that drive and enter `N` to specify that BRU should now read from that device instead.
-- If you only have a single drive
-  - open a new terminal tab or window.
-  - Use `mt` and `mtx` to rewind and unload the tape.
-  - Load the next volume into the drive.
-  - Return to the original BRU prompt and press enter or type "c" and press enter.
-  - BRU should continue processing on the new volume.
-- You can load multiple volumes simultaneously and tell BRU to process the next volume after the current one is completed using the device cycling command, repeating `-f device`.
-  ```
-  sudo bru -g -b 2048k -f /dev/nst# -f /dev/nst# -v
-  ```
-- **TODO** Further investigation still required. The above command will not automatically begin reading the second tape. BRU will ask user input to continue or quit the operation after finishing the first volume, but it will not prompt the user with the `load volume` message. Instead, the user is prompted with two messages: `assuming end of volume #` `use device "/dev/nst#" ? [y/n]` where volume # is the current volume and /dev/nst# is the the next volume loaded.
-
 ### Verify Tape (without restoring)
 
 - (have not tested yet)
@@ -238,11 +221,11 @@ Depending on your specific needs, you must first install some or all of the foll
   bru -ivf /dev/st0
   ```
 
-### Restoring Files From Tape to a Different Directory
+### Restoring Files
 
 - The `-x` command is used to extract/restore files from a BRU LTO tape.
 - Start by checking what the path information on the LTO tape looks like using the `-t` command.
-- To restore the files with their original paths preserved, run the following command:
+- To restore the files to the current directory with their original paths preserved, run the following command:
   ```
   sudo bru -xvvv -b 128k -PA -f /dev/nst#
   ```
@@ -265,7 +248,24 @@ Depending on your specific needs, you must first install some or all of the foll
   - If there are any paths on the LTO tape that you did not include in your translation file, running the command from the desired output folder with the `-PA` command ensures that they will still be written to that folder with their full original paths appended to the end of the current folder.
   - **TODO** - address writing /Volume in a better way (translation file should probably be able to cover this)
 
-### Restoring A Specific File or Directory
+### Multi-Volume Tapes
+
+- When BRU reaches the end of a volume it will prompt the user with the message `load volume # - press ENTER to continue on device 'dev/nst#'`
+- You will then have the option to tell BRU how to proceed (**C**ontinue, **N**ew device, **Q**uit)
+- If you have multiple drives connected, you can load the next volume into that drive and enter `N` to specify that BRU should now read from that device instead.
+- If you only have a single drive
+  - open a new terminal tab or window.
+  - Use `mt` and `mtx` to rewind and unload the tape.
+  - Load the next volume into the drive.
+  - Return to the original BRU prompt and press enter or type "c" and press enter.
+  - BRU should continue processing on the new volume.
+- You can load multiple volumes simultaneously and tell BRU to process the next volume after the current one is completed using the device cycling command, repeating `-f device`.
+  ```
+  sudo bru -g -b 2048k -f /dev/nst# -f /dev/nst# -v
+  ```
+- **TODO** Further investigation still required. The above command will not automatically begin reading the second tape. BRU will ask user input to continue or quit the operation after finishing the first volume, but it will not prompt the user with the `load volume` message. Instead, the user is prompted with two messages: `assuming end of volume #` `use device "/dev/nst#" ? [y/n]` where volume # is the current volume and /dev/nst# is the the next volume loaded.
+
+### Restoring a Specific File or Directory
 
 **THE FOLLOWING RESTORE COMMANDS HAVE NOT BEEN TESTED**
 
