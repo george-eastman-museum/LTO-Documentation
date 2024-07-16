@@ -198,7 +198,7 @@ Depending on your specific needs, you must first install some or all of the foll
 
 ## BRU
 
-### Reading Tapes
+### Checking Tape Contents
 
 - Check the status of your loaded tape using the MT command to make sure that you are at the beginning.
 - Inspect the first block of the tape and get general info about it.
@@ -229,7 +229,10 @@ Depending on your specific needs, you must first install some or all of the foll
   ```
   sudo bru -xvvv -b 128k -PA -f /dev/nst#
   ```
-- In order to change the path when restoring the files you will need to create a translation file.
+
+### Using Translation Files
+
+- You can change the original path of the data on the tape when restoring files using a translation file.
 - A translation file is just a simple text file listing the original path information and the new path information that you want to replace that with, separated by a space.
   - Example1: /Volumes/Original_Folder /mnt/New_Network_Share/LTO_Output
   - Example2: /Volumes/Original_Folder '/mnt/New Network Share with Spaces/LTO Output'
