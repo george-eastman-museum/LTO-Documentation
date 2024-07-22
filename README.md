@@ -298,3 +298,5 @@ The following are some resources related to LTO/LTFS usage:
 
  - Blog on the experiences of an LTO/LTFS beginner (https://digitensions.home.blog/2019/01/15/technologic/)
  - AMIA's resource on LTFS (https://github.com/amiaopensource/ltopers)
+ - Forensic Imaging Resources (https://github.com/KBNLresearch/forensicImagingResources)
+ - Tape imaging tool (https://github.com/KBNLresearch/tapeimgr)
