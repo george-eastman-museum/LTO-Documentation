@@ -57,7 +57,7 @@ Depending on your specific needs, you must first install some or all of the foll
   ![LTO drives](images/drive_closeup.jpg)
   *LTO drives*
 
-  ![SAS cable](images/SAS_front.jpg)
+  ![SAS cable](images/SFF-8088_top.jpg)
   *SAS cable*
 
   ![SAS cables connected to LTO drives](images/drive_with_cables.jpg)
