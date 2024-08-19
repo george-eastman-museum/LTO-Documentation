@@ -224,7 +224,7 @@ Depending on your specific needs, you must first install some or all of the foll
 ### Restoring Files
 
 - The `-x` command is used to extract/restore files from a BRU LTO tape.
-- Start by checking what the path information on the LTO tape looks like using the `-t` command.
+- Start by changing directories to the location where you want the restored files to appear. Note that files will be restored with their original absolute paths at this location.
 - To restore the files to the current directory with their original paths preserved, run the following command:
   ```
   sudo bru -xvvv -b 128k -PA -f /dev/nst#
