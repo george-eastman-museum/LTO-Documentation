@@ -19,10 +19,7 @@
 - If you want the tape to rewind after an action is performed, it should be referenced as `/dev/st#`
 - If you want to leave off at the end of your last action on the tape (for example when writing files to prevent overwriting data), you would use `/dev/nst#`
 - As long as you remember to manually rewind or seek to the correct location when necessary, `/dev/nst#` should always work. `/dev/nst#` is the safer option, especially when working with multiple tapes mounted simultaneously. For example, if a user enters the `st` command with the wrong device number a tape could get rewound during a read/write operation. 
-- Use the following command to rewind.
-  ```
-  sudo mt -f /dev/st# rewind
-  ```
+
 ### **/dev/sg#** vs **/dev/sch#**
 
 - The tape library commands using `mtx` can use either the SGSI generic number (/dev/sg#) or the SCSI Changer number (/dev/sch#).
@@ -67,7 +64,7 @@ Depending on your specific needs, you must first install some or all of the foll
   ```
   cat /proc/scsi/scsi
   ```
-- If you are using an auto-loader, you should see two tape-related devices (in this case associated with scsi6, but with different Lun numbers)
+- If you are using an auto-loader, you should see two tape-related devices (in this case associated with scsi6, but with different Lun numbers <-- TODO add image)
 
   ![tape library](images/tape_library_workstation.jpg)
   *Auto-loader tape library*
@@ -127,6 +124,11 @@ Depending on your specific needs, you must first install some or all of the foll
   sudo umount /mnt/ltfs
   ```
 - Now the file system is unmounted, you can rewind and unload the tape
+- You can use the following command to rewind
+  ```
+  sudo mt -f /dev/st# rewind
+  ```
+- And/or the following command to rewind and offload the tape
   ```
   sudo mt -f /dev/nst# rewoffl
   ```
