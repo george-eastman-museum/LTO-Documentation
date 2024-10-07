@@ -22,7 +22,7 @@
 
 ### **/dev/sg#** vs **/dev/sch#**
 
-- The tape library commands using `mtx` can use either the SGSI generic number (/dev/sg#) or the SCSI Changer number (/dev/sch#).
+- The tape library commands using `mtx` can use either the SCSI generic number (/dev/sg#) or the SCSI Changer number (/dev/sch#).
 - `/dev/sch#` will generally be easier to identify since there is likely to only be one changer connected to the computer at a time.
 
 ## Installation - Prerequisites
